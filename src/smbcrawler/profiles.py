@@ -37,8 +37,14 @@ class Secret(object):
         self.comment = comment
 
         flags = process_flags(regex_flags)
-
-        self.regex = re.compile(".*" + regex + ".*", flags=flags)
+        
+        # If the regex already starts with an inline flag, don't prepend '.*'
+        if regex.lstrip().startswith("(?"):
+            pattern = regex
+        else:
+            pattern = ".*" + regex + ".*"
+            
+        self.regex = re.compile(pattern, flags=flags)
 
         self.false_positives = false_positives
 
@@ -130,26 +136,29 @@ def collect_profiles(
     load_default: bool = True,
 ) -> ProfileCollection:
     """Build the profile collections
-
+    
     This function reads profile files from various directories to build the
     profile. `update_queries` can override single keys. They need to be in this format:
-
+    
     `key1.key2.key3=value`
-
+    
     """
     dirs = [
         xdg_data_home() / "smbcrawler",
         pathlib.Path(os.getcwd()),
     ]
-
+    
     for d in extra_dirs:
+        # Convert to pathlib.Path if necessary
+        if not isinstance(d, pathlib.Path):
+            d = pathlib.Path(d)
         dirs.append(d)
-
+    
     files = []
-
+    
     if load_default:  # Conditionally add the default profile
         files.append(SCRIPT_PATH / "default_profile.yml")
-
+    
     for i, d in enumerate(dirs):
         for pattern in ["*.yml", "*.yaml"]:
             if i == 1:
@@ -160,11 +169,11 @@ def collect_profiles(
                 # Recursively look in other folders
                 for path in d.rglob(pattern):
                     files.append(path)
-
+    
     files.extend(map(pathlib.Path, extra_files))
-
+    
     result: dict[str, object] = {}
-
+    
     for file in map(str, files):
         try:
             with open(file, "r") as fp:
@@ -173,14 +182,14 @@ def collect_profiles(
             log.error("Error while parsing file: %s\n%s" % (file, e))
         else:
             result = deep_update(result, data)
-
+    
     for q in update_queries:
         try:
             key_path, value = q.split("=")
             update_nested_dict(result, key_path, value)
         except ValueError:
             log.error(f"Ignoring update path due to parsing error: {q}")
-
+    
     collection = ProfileCollection(result)
     return collection
 
