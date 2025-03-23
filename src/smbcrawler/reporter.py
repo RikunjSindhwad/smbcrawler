@@ -250,8 +250,7 @@ class EventReporter(object):
     def downloaded_file(self, target, share, path, local_path, content_hash, tree):
         log.info("Downloaded", extra=dict(target=target, share=share, path=path))
 
-        new_filename = os.path.join(os.path.dirname(local_path), content_hash)
-        create_link(str(target), str(share), path, new_filename, tree)
+        create_link(str(target), str(share), path, local_path, tree)
 
         # clean_content = None
         # try:
