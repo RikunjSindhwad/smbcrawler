@@ -34,9 +34,6 @@ dependencies = [
     'zundler>=0.2.1',
 ]
 
-[project.optional-dependencies]
-binary-conversion = ["markitdown"]
-
 [tool.setuptools]
 packages = ["smbcrawler"]
 

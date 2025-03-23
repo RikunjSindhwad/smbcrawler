@@ -4,6 +4,8 @@ SmbCrawler
 SmbCrawler is no-nonsense tool that takes credentials and a list of hosts
 and 'crawls' (or 'spiders') through those shares. Features:
 
+> Note: This no longer checks for secrets and only downloads files based on profile, the perpose is noseyparker performs way beyond in that area
+
 * takes host names, IP addresses, IP ranges, or an nmap xml file as input
 * checks permissions (check for 'write' permissions is opt-in, because it
   requires creating an empty directory on the share)
@@ -30,7 +32,7 @@ Because this package is pulling a lot of dependencies, it is marked as an extra.
 However, it is highly recommended to get the best results. If you want to automatically convert binaries, install SmbCrawler like this:
 
 ```console
-pipx install 'smbcrawler[binary-conversion]'
+pipx install 'git+https://github.com/RikunjSindhwad/smbcrawler.git'
 ```
 
 Adding shell completion is highly recommended. As a Python app using the

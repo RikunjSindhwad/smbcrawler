@@ -260,27 +260,27 @@ class EventReporter(object):
 
         os.rename(local_path, new_filename)
 
-        clean_content = None
-        try:
-            clean_content = convert(new_filename)
-        except Exception:
-            log.debug(
-                "Unable to parse",
-                exc_info=True,
-                extra=dict(target=target, share=share, path=path),
-            )
-            return
+        # clean_content = None
+        # try:
+        #     clean_content = convert(new_filename)
+        # except Exception:
+        #     log.debug(
+        #         "Unable to parse",
+        #         exc_info=True,
+        #         extra=dict(target=target, share=share, path=path),
+        #     )
+        #     return
 
-        with open(new_filename, "rb") as fp:
-            old_content = fp.read()
-        if clean_content and clean_content.encode() != old_content:
-            with open(new_filename + ".txt", "w") as fp:
-                fp.write(clean_content)
+        # with open(new_filename, "rb") as fp:
+        #     old_content = fp.read()
+        # if clean_content and clean_content.encode() != old_content:
+        #     with open(new_filename + ".txt", "w") as fp:
+        #         fp.write(clean_content)
 
-        secrets = find_secrets(clean_content, self.profile_collection["secrets"])
+        # secrets = find_secrets(clean_content, self.profile_collection["secrets"])
 
-        for s in secrets:
-            self.found_secret(target, share, path, s, content_hash)
+        # for s in secrets:
+        #     self.found_secret(target, share, path, s, content_hash)
 
     def skip_share(self, target, share):
         log.info(

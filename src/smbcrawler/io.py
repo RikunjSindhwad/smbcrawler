@@ -131,25 +131,9 @@ def load_as_utf8(path):
 
 
 def convert(path):
-    """Convert potentially binary content to string"""
+    """Removed for purpose"""
 
-    try:
-        try:
-            from markitdown import (
-                MarkItDown,
-                FileConversionException,
-                UnsupportedFormatException,
-            )
-
-            result = (
-                MarkItDown(exiftool_path="/usr/bin/exiftool").convert(path).text_content
-            )
-        except (FileConversionException, UnsupportedFormatException):
-            result = load_as_utf8(path)
-    except ImportError:
-        result = load_as_utf8(path)
-
-    return result
+    return load_as_utf8(path)
 
 
 def find_secrets(content, secret_profiles):
