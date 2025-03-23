@@ -253,13 +253,6 @@ class EventReporter(object):
         new_filename = os.path.join(os.path.dirname(local_path), content_hash)
         create_link(str(target), str(share), path, new_filename, tree)
 
-        if os.path.exists(new_filename):
-            # File already seen, discard
-            os.unlink(local_path)
-            return
-
-        os.rename(local_path, new_filename)
-
         # clean_content = None
         # try:
         #     clean_content = convert(new_filename)

@@ -165,7 +165,6 @@ def sanitize(remark):
     result = "".join([x for x in remark if ord(x) >= 32])
     return result
 
-
 def create_link(target, share, path, src, dst):
     local_path = os.path.join(dst, "tree")
     for part in [target, share] + path.split("\\"):
@@ -173,4 +172,7 @@ def create_link(target, share, path, src, dst):
         local_path = os.path.join(local_path, part)
         src = os.path.join("..", src)
     src = os.path.join("..", src)
-    os.symlink(src, local_path)
+    # move the file to the new location
+    os.rename(src, local_path)
+    
+    
