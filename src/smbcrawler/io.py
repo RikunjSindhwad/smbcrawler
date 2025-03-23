@@ -170,8 +170,6 @@ def create_link(target, share, path, src, dst):
     for part in [target, share] + path.split("\\"):
         os.makedirs(local_path, exist_ok=True)
         local_path = os.path.join(local_path, part)
-        src = os.path.join("..", src)
-    src = os.path.join("..", src)
     # move the file to the new location
     os.rename(src, local_path)
     
